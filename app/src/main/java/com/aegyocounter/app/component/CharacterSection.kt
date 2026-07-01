@@ -26,7 +26,7 @@ fun CharacterSection(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp)
-            .offset(y = (-24).dp),
+            .offset(y = (-36).dp),
         contentAlignment = Alignment.Center
     ) {
 
@@ -44,10 +44,10 @@ fun CharacterSection(
             modifier = Modifier
                 .align(Alignment.TopStart)
                 .offset(
-                    x = 46.dp,
-                    y = 60.dp
+                    x = 50.dp,
+                    y = 64.dp
                 ),
-            fontSize = 20.sp,
+            fontSize = 22.sp,
             fontWeight = FontWeight.Medium,
             color = Color.Black
         )
@@ -58,8 +58,8 @@ fun CharacterSection(
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .offset(
-                    x = (-58).dp,
-                    y = 58.dp
+                    x = (-52).dp,
+                    y = 60.dp
                 ),
             fontSize = 20.sp,
             fontWeight = FontWeight.Medium,

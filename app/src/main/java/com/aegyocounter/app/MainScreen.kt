@@ -86,22 +86,24 @@ fun MainContent(
             girlMessage = state.girlMessage
         )
 
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(0.dp))
 
         RageGaugeSection(
-            modifier = Modifier.offset(y = (-20).dp),
+            modifier = Modifier.offset(y = (-32).dp),
             progress = state.number.coerceAtMost(100) / 100f
         )
 
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(0.dp))
 
         CounterButtonSection(
+            modifier = Modifier.offset(y = (-12).dp),
             onIntent = onIntent
         )
 
         Spacer(modifier = Modifier.height(20.dp))
 
         RecordSection(
+            modifier = Modifier.offset(y = (-10).dp),
             todayBest = state.todayBest,
             weekBest = state.weekBest,
             allBest = state.allBest

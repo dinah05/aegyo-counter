@@ -72,7 +72,7 @@ fun Header(
             fontFamily = Ongeulip,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 12.dp),
+                .padding(top = 0.dp),
             textAlign = TextAlign.Center
         )
     }

@@ -7,7 +7,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -43,7 +45,7 @@ fun RageGaugeSection(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 18.dp)
+            .padding(horizontal = 60.dp)
     ) {
 
         Row(
@@ -64,12 +66,15 @@ fun RageGaugeSection(
             )
         }
 
+        Spacer(modifier = Modifier.height(8.dp))
+
         LinearProgressIndicator(
             progress = { animatedProgress },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 12.dp)
-                .clip(RoundedCornerShape(50.dp)),
+                .height(12.dp)
+                .align(Alignment.CenterHorizontally)
+                .clip(RoundedCornerShape(100.dp)),
             color = Color(0xFFC54135),
             trackColor = Color(0xFFE5D8CC)
         )

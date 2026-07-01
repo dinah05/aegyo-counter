@@ -81,12 +81,13 @@ fun CounterSection(
                 )
         )
 
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(2.dp))
 
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(90.dp),
+                .height(90.dp)
+                .offset(y = (-8).dp),   // ← 숫자와 빠직아 함께 이동되게 수정
             contentAlignment = Alignment.Center
         ) {
 
