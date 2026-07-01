@@ -1,6 +1,7 @@
 package com.aegyocounter.app
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.aegyocounter.app.data.CounterDataStore
@@ -176,6 +177,9 @@ class MainViewModel(
             dataStore.saveAllBest(allBest)
 
             achievements.find { it.count == newCount }?.let { achievement ->
+
+                Log.d("ACH", "Achievement Triggered: ${achievement.count}")
+
                 _state.update {
                     it.copy(
                         showAchievementDialog = true,

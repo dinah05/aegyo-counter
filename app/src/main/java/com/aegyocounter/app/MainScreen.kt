@@ -103,7 +103,6 @@ fun MainContent(
         Spacer(modifier = Modifier.height(20.dp))
 
         RecordSection(
-            modifier = Modifier.offset(y = (-10).dp),
             todayBest = state.todayBest,
             weekBest = state.weekBest,
             allBest = state.allBest

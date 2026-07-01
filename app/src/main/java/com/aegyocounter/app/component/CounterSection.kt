@@ -87,7 +87,7 @@ fun CounterSection(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(90.dp)
-                .offset(y = (-8).dp),   // ← 숫자와 빠직아 함께 이동되게 수정
+                .offset(y = (-8).dp),   // ← 숫자와 빠직이 함께 이동되게 수정
             contentAlignment = Alignment.Center
         ) {
 
