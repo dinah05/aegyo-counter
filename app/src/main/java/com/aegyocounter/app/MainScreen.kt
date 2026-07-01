@@ -6,9 +6,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -67,15 +64,15 @@ fun MainContent(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
             .navigationBarsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(20.dp))
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         Header()
 
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(2.dp))
 
         CounterSection(
             count = state.number
@@ -86,21 +83,17 @@ fun MainContent(
             girlMessage = state.girlMessage
         )
 
-        Spacer(modifier = Modifier.height(0.dp))
-
         RageGaugeSection(
-            modifier = Modifier.offset(y = (-32).dp),
             progress = state.number.coerceAtMost(100) / 100f
         )
 
-        Spacer(modifier = Modifier.height(0.dp))
+        Spacer(modifier = Modifier.height(6.dp))
 
         CounterButtonSection(
-            modifier = Modifier.offset(y = (-12).dp),
             onIntent = onIntent
         )
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         RecordSection(
             todayBest = state.todayBest,
@@ -108,7 +101,7 @@ fun MainContent(
             allBest = state.allBest
         )
 
-        Spacer(modifier = Modifier.height(100.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
         if (state.showAchievementDialog) {
             AchievementDialog(

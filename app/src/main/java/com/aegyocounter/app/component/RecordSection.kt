@@ -54,7 +54,7 @@ fun RecordSection(
                     color = Color(0xFFFF7FA6),
                     shape = RoundedCornerShape(18.dp)
                 )
-                .padding(vertical = 10.dp)
+                .padding(vertical = 8.dp)
         ) {
 
             Row(
@@ -70,7 +70,7 @@ fun RecordSection(
 
                 Box(
                     modifier = Modifier
-                        .height(90.dp)
+                        .height(80.dp)
                         .width(1.dp)
                         .background(Color(0xFFE9D7D7))
                 )
@@ -83,7 +83,7 @@ fun RecordSection(
 
                 Box(
                     modifier = Modifier
-                        .height(90.dp)
+                        .height(80.dp)
                         .width(1.dp)
                         .background(Color(0xFFE9D7D7))
                 )
@@ -115,7 +115,7 @@ private fun RecordItem(
 
         Text(
             text = title,
-            fontSize = 36.sp,
+            fontSize = 30.sp,
             fontFamily = Ongeulip,
             fontWeight = FontWeight.Bold,
             color = Color.Black
@@ -123,8 +123,9 @@ private fun RecordItem(
 
         Text(
             text = "${count}회",
-            modifier = Modifier.padding(top = 6.dp),
-            fontSize = 30.sp,
+            modifier = Modifier.padding(top = 4.dp),
+            fontSize = 26.sp,
+            fontFamily = Ongeulip,
             fontWeight = FontWeight.ExtraBold,
             color = Color(0xFF9B4038)
         )
@@ -133,8 +134,8 @@ private fun RecordItem(
             painter = painterResource(icon),
             contentDescription = null,
             modifier = Modifier
-                .padding(top = 6.dp)
-                .size(46.dp)
+                .padding(top = 4.dp)
+                .size(40.dp)
         )
     }
 }
