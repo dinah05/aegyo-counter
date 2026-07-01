@@ -70,7 +70,7 @@ fun RecordSection(
 
                 Box(
                     modifier = Modifier
-                        .height(100.dp)
+                        .height(90.dp)
                         .width(1.dp)
                         .background(Color(0xFFE9D7D7))
                 )
@@ -123,7 +123,7 @@ private fun RecordItem(
 
         Text(
             text = "${count}회",
-            modifier = Modifier.padding(top = 8.dp),
+            modifier = Modifier.padding(top = 6.dp),
             fontSize = 30.sp,
             fontWeight = FontWeight.ExtraBold,
             color = Color(0xFF9B4038)
