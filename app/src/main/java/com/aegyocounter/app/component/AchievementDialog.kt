@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -79,7 +80,7 @@ fun AchievementDialog(
                     )
 
                     Text(
-                        text = "애교 속보",
+                        text = "애교 경보",
                         fontSize = 48.sp,
                         fontWeight = FontWeight.ExtraBold,
                         fontFamily = Ongeulip,
@@ -97,12 +98,13 @@ fun AchievementDialog(
                 Text(
                     text = "오늘 친구의 애교를",
                     fontFamily = Ongeulip,
-                    modifier = Modifier.padding(top = 16.dp),
-                    fontSize = 24.sp
+                    modifier = Modifier.padding(top = 12.dp),
+                    fontSize = 28.sp
                 )
 
                 Text(
                     text = "${count}번",
+                    modifier = Modifier.padding(top = 2.dp),
                     fontFamily = Ongeulip,
                     fontSize = 80.sp,
                     fontWeight = FontWeight.ExtraBold,
@@ -111,8 +113,9 @@ fun AchievementDialog(
 
                 Text(
                     text = "이나 견뎌냈습니다.",
+                    modifier = Modifier.offset(y = (-2).dp),
                     fontFamily = Ongeulip,
-                    fontSize = 24.sp
+                    fontSize = 28.sp
                 )
 
                 Image(
@@ -120,7 +123,7 @@ fun AchievementDialog(
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxWidth(0.85f)
-                        .padding(vertical = 20.dp)
+                        .padding(top = 12.dp, bottom = 18.dp)
                 )
 
                 Box(
@@ -139,12 +142,12 @@ fun AchievementDialog(
                         modifier = Modifier
                             .align(Alignment.CenterStart)
                             .padding(
-                                start = 132.dp,
-                                top = 18.dp,
-                                end = 24.dp
+                                start = 114.dp,
+                                top = 16.dp,
+                                end = 20.dp
                             ),
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                        verticalArrangement = Arrangement.spacedBy(2.dp)
                     ) {
 
                         Text(
