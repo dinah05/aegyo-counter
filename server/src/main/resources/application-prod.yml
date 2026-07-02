@@ -1,0 +1,10 @@
+# 운영 프로파일 — 저장소는 인메모리라 DB 설정이 없다. (재시작 시 데이터 초기화)
+discord:
+  webhook:
+    enabled: ${DISCORD_WEBHOOK_ENABLED:true}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health

@@ -1,0 +1,7 @@
+counter:
+  reset-password: test-reset-pw
+
+discord:
+  webhook:
+    enabled: false
+    threshold: 50
