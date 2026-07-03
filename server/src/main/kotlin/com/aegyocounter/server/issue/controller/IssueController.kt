@@ -28,6 +28,14 @@ class IssueController(
             .status(CommonSuccessCode.CREATED.httpStatus)
             .body(ApiResponse.onSuccess(issueService.create(request), CommonSuccessCode.CREATED))
 
+    @PostMapping("/assign-unassigned")
+    override fun assignUnassigned(): ApiResponse<List<IssueResponseDTO>> =
+        ApiResponse.onSuccess(issueService.assignUnassigned())
+
+    @PostMapping("/{id}/assign")
+    override fun assign(@PathVariable id: Long): ApiResponse<IssueResponseDTO> =
+        ApiResponse.onSuccess(issueService.assign(id))
+
     @GetMapping("/{id}")
     override fun get(@PathVariable id: Long): ApiResponse<IssueResponseDTO> =
         ApiResponse.onSuccess(issueService.get(id))

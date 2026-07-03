@@ -7,7 +7,7 @@ data class IssueResponseDTO(
     val id: Long,
     val title: String,
     val content: String,
-    val assignee: String,
+    val assignee: String?,
     val link: String,
     val createdAt: LocalDateTime,
 ) {

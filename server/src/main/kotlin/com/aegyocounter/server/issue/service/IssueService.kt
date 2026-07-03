@@ -18,8 +18,8 @@ class IssueService(
 
     @Transactional
     fun create(request: IssueCreateRequestDTO): IssueResponseDTO {
-        // assignee 가 없으면 codebidoof 로 고정 할당, 링크는 하드코딩으로 바로 연결
-        val assignee = request.assignee?.takeIf { it.isNotBlank() } ?: IssueConstants.DEFAULT_ASSIGNEE
+        // assignee 를 비우면 미할당(null) 상태로 등록, 링크는 하드코딩으로 연결
+        val assignee = request.assignee?.takeIf { it.isNotBlank() }
         val issue = Issue.create(
             title = request.title,
             content = request.content,
@@ -27,6 +27,23 @@ class IssueService(
             link = IssueConstants.HARDCODED_LINK,
         )
         return IssueResponseDTO.of(issueRepository.save(issue))
+    }
+
+    /** 미할당 이슈 전부를 codebidoof 에게 배정한다. @return 이번에 배정된 이슈들 */
+    @Transactional
+    fun assignUnassigned(): List<IssueResponseDTO> {
+        val targets = issueRepository.findByAssigneeIsNull()
+        targets.forEach { it.assignTo(IssueConstants.DEFAULT_ASSIGNEE) }
+        return targets.map { IssueResponseDTO.of(it) }
+    }
+
+    /** 특정 이슈를 codebidoof 에게 배정한다. */
+    @Transactional
+    fun assign(id: Long): IssueResponseDTO {
+        val issue = issueRepository.findByIdOrNull(id)
+            ?: throw CustomException(IssueErrorCode.NOT_FOUND)
+        issue.assignTo(IssueConstants.DEFAULT_ASSIGNEE)
+        return IssueResponseDTO.of(issue)
     }
 
     @Transactional(readOnly = true)
