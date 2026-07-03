@@ -26,7 +26,7 @@ fun CharacterSection(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp)
-            .offset(y = (-36).dp),
+            .offset(y = (-28).dp),
         contentAlignment = Alignment.Center
     ) {
 
@@ -35,7 +35,7 @@ fun CharacterSection(
             contentDescription = null,
             modifier = Modifier
                 .align(Alignment.TopCenter)
-                .fillMaxWidth(0.9f)
+                .fillMaxWidth(0.84f)
         )
 
         // 왼쪽 말풍선
@@ -44,10 +44,10 @@ fun CharacterSection(
             modifier = Modifier
                 .align(Alignment.TopStart)
                 .offset(
-                    x = 50.dp,
-                    y = 64.dp
+                    x = 58.dp,
+                    y = 58.dp
                 ),
-            fontSize = 22.sp,
+            fontSize = 20.sp,
             fontWeight = FontWeight.Medium,
             color = Color.Black
         )
@@ -58,8 +58,8 @@ fun CharacterSection(
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .offset(
-                    x = (-52).dp,
-                    y = 60.dp
+                    x = (-58).dp,
+                    y = 56.dp
                 ),
             fontSize = 20.sp,
             fontWeight = FontWeight.Medium,

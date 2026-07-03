@@ -69,15 +69,15 @@ fun MainContent(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
             .navigationBarsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(20.dp))
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         Header()
 
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(2.dp))
 
         CounterSection(
             count = state.number
@@ -88,21 +88,17 @@ fun MainContent(
             girlMessage = state.girlMessage
         )
 
-        Spacer(modifier = Modifier.height(0.dp))
-
         RageGaugeSection(
-            modifier = Modifier.offset(y = (-32).dp),
             progress = state.number.coerceAtMost(100) / 100f
         )
 
-        Spacer(modifier = Modifier.height(0.dp))
+        Spacer(modifier = Modifier.height(6.dp))
 
         CounterButtonSection(
-            modifier = Modifier.offset(y = (-12).dp),
             onIntent = onIntent
         )
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         RecordSection(
             todayBest = state.todayBest,
@@ -110,15 +106,7 @@ fun MainContent(
             allBest = state.allBest
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            onClick = { onIntent(CounterIntent.AssignIssue) }
-        ) {
-            Text("미할당 이슈 1개 배정")
-        }
-
-        Spacer(modifier = Modifier.height(100.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
         if (state.showAchievementDialog) {
             AchievementDialog(

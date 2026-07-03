@@ -1,10 +1,6 @@
 package com.aegyocounter.app.ui.component
 
 import android.content.Context
-import android.os.Build
-import android.os.VibrationEffect
-import android.os.Vibrator
-import android.os.VibratorManager
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
@@ -36,7 +32,7 @@ import com.aegyocounter.app.util.SoundManager
 @Composable
 fun CounterButtonSection(
     onIntent: (CounterIntent) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
 
     val context = LocalContext.current
@@ -87,7 +83,7 @@ fun CounterButtonSection(
                 .fillMaxWidth()
                 .padding(
                     horizontal = 12.dp,
-                    vertical = 4.dp
+                    vertical = 2.dp      // 4dp → 2dp
                 ),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
@@ -97,7 +93,7 @@ fun CounterButtonSection(
                 painter = painterResource(R.drawable.btn_minus),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(110.dp)
+                    .size(102.dp)        // 110dp → 102dp
                     .scale(minusScale)
                     .clickable(
                         interactionSource = minusInteraction,
@@ -111,7 +107,7 @@ fun CounterButtonSection(
                 painter = painterResource(R.drawable.btn_reset),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(60.dp)
+                    .size(56.dp)         // 60dp → 56dp
                     .scale(resetScale)
                     .clickable(
                         interactionSource = resetInteraction,
@@ -125,7 +121,7 @@ fun CounterButtonSection(
                 painter = painterResource(R.drawable.btn_plus),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(110.dp)
+                    .size(102.dp)        // 110dp → 102dp
                     .scale(plusScale)
                     .clickable(
                         interactionSource = plusInteraction,
@@ -141,29 +137,21 @@ fun CounterButtonSection(
 }
 
 private fun vibrate(context: Context) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+    val vibrator =
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            val manager = context.getSystemService(
+                Context.VIBRATOR_MANAGER_SERVICE
+            ) as android.os.VibratorManager
+            manager.defaultVibrator
+        } else {
+            @Suppress("DEPRECATION")
+            context.getSystemService(Context.VIBRATOR_SERVICE) as android.os.Vibrator
+        }
 
-        val vibratorManager =
-            context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
-
-        vibratorManager.defaultVibrator.vibrate(
-            VibrationEffect.createOneShot(
-                20,
-                VibrationEffect.DEFAULT_AMPLITUDE
-            )
+    vibrator.vibrate(
+        android.os.VibrationEffect.createOneShot(
+            20,
+            android.os.VibrationEffect.DEFAULT_AMPLITUDE
         )
-
-    } else {
-
-        @Suppress("DEPRECATION")
-        val vibrator =
-            context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-
-        vibrator.vibrate(
-            VibrationEffect.createOneShot(
-                20,
-                VibrationEffect.DEFAULT_AMPLITUDE
-            )
-        )
-    }
+    )
 }
