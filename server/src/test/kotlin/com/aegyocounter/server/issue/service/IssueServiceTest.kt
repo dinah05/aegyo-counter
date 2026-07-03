@@ -1,5 +1,6 @@
 package com.aegyocounter.server.issue.service
 
+import com.aegyocounter.server.github.GitHubIssueClient
 import com.aegyocounter.server.issue.IssueConstants
 import com.aegyocounter.server.issue.dto.IssueCreateRequestDTO
 import com.aegyocounter.server.issue.entity.Issue
@@ -15,7 +16,8 @@ import org.mockito.kotlin.whenever
 class IssueServiceTest {
 
     private val issueRepository = mock<IssueRepository>()
-    private val service = IssueService(issueRepository)
+    private val gitHubIssueClient = mock<GitHubIssueClient>()
+    private val service = IssueService(issueRepository, gitHubIssueClient)
 
     @Test
     fun `assignee가 없으면 미할당 상태로 등록하고 링크를 하드코딩으로 연결한다`() {

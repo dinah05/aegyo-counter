@@ -1,6 +1,7 @@
 package com.aegyocounter.server.issue.service
 
 import com.aegyocounter.server.common.exception.CustomException
+import com.aegyocounter.server.github.GitHubIssueClient
 import com.aegyocounter.server.issue.IssueConstants
 import com.aegyocounter.server.issue.IssueErrorCode
 import com.aegyocounter.server.issue.dto.IssueCreateRequestDTO
@@ -14,17 +15,26 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class IssueService(
     private val issueRepository: IssueRepository,
+    private val gitHubIssueClient: GitHubIssueClient,
 ) {
 
     @Transactional
     fun create(request: IssueCreateRequestDTO): IssueResponseDTO {
-        // assignee 를 비우면 미할당(null) 상태로 등록, 링크는 하드코딩으로 연결
+        // assignee 를 비우면 미할당(null) 상태로 등록
         val assignee = request.assignee?.takeIf { it.isNotBlank() }
+
+        // GitHub 이슈 생성 시도(토큰 없으면 null). 성공 시 그 이슈 URL을 링크로 사용.
+        val githubUrl = gitHubIssueClient.createIssue(
+            title = request.title,
+            body = request.content,
+            assignees = listOfNotNull(assignee),
+        )
+
         val issue = Issue.create(
             title = request.title,
             content = request.content,
             assignee = assignee,
-            link = IssueConstants.HARDCODED_LINK,
+            link = githubUrl ?: IssueConstants.HARDCODED_LINK,
         )
         return IssueResponseDTO.of(issueRepository.save(issue))
     }

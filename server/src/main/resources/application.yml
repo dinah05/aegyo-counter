@@ -28,6 +28,13 @@ server:
 counter:
   reset-password: ${COUNTER_RESET_PASSWORD:}
 
+# GitHub 이슈 연동 (token 없으면 실제 생성 스킵)
+github:
+  token: ${GITHUB_TOKEN:}
+  owner: LinkYou-2025
+  repo: LinkU_Android
+  base-url: https://api.github.com
+
 # Discord 웹훅 알림 설정
 # enabled=false면 실제 전송 대신 로그로 대체(로컬 기본값)
 discord:
