@@ -37,6 +37,15 @@ class IssueService(
         return targets.map { IssueResponseDTO.of(it) }
     }
 
+    /** 미할당 이슈 중 가장 오래된 1개만 codebidoof 에게 배정한다. */
+    @Transactional
+    fun assignOneUnassigned(): IssueResponseDTO {
+        val issue = issueRepository.findFirstByAssigneeIsNullOrderByIdAsc()
+            ?: throw CustomException(IssueErrorCode.NO_UNASSIGNED)
+        issue.assignTo(IssueConstants.DEFAULT_ASSIGNEE)
+        return IssueResponseDTO.of(issue)
+    }
+
     /** 특정 이슈를 codebidoof 에게 배정한다. */
     @Transactional
     fun assign(id: Long): IssueResponseDTO {

@@ -49,4 +49,14 @@ class IssueServiceTest {
         assertThat(result).hasSize(2)
         assertThat(result).allMatch { it.assignee == IssueConstants.DEFAULT_ASSIGNEE }
     }
+
+    @Test
+    fun `미할당 이슈 1개만 codebidoof에게 배정한다`() {
+        val oldest = Issue.create("A", "내용A", null, IssueConstants.HARDCODED_LINK)
+        whenever(issueRepository.findFirstByAssigneeIsNullOrderByIdAsc()).doReturn(oldest)
+
+        val result = service.assignOneUnassigned()
+
+        assertThat(result.assignee).isEqualTo(IssueConstants.DEFAULT_ASSIGNEE)
+    }
 }

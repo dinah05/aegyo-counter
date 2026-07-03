@@ -17,6 +17,12 @@ interface IssueApi {
     fun create(request: IssueCreateRequestDTO): ResponseEntity<ApiResponse<IssueResponseDTO>>
 
     @Operation(
+        summary = "미할당 이슈 1개 배정",
+        description = "미할당 이슈 중 가장 오래된 1개를 codebidoof 에게 배정한다. 없으면 404.",
+    )
+    fun assignOneUnassigned(): ApiResponse<IssueResponseDTO>
+
+    @Operation(
         summary = "미할당 이슈 일괄 배정",
         description = "담당자가 없는(미할당) 이슈 전부를 codebidoof 에게 배정한다.",
     )

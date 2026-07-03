@@ -66,7 +66,8 @@
 | Method | Path | 설명 |
 |---|---|---|
 | POST | `/issues` | 이슈 등록 (assignee 비우면 미할당) |
-| POST | `/issues/assign-unassigned` | **미할당 이슈 전부를 `codebidoof`에게 배정** |
+| POST | `/issues/assign-one` | **미할당 이슈 중 가장 오래된 1개를 `codebidoof`에게 배정** |
+| POST | `/issues/assign-unassigned` | 미할당 이슈 전부를 `codebidoof`에게 배정 |
 | POST | `/issues/{id}/assign` | 특정 이슈를 `codebidoof`에게 배정 |
 | GET | `/issues/{id}` | 단건 조회 |
 | GET | `/issues` | 목록 조회 |
