@@ -47,15 +47,14 @@
 
 베이스: `/api/v1`. 모든 응답은 `ApiResponse<T>` 래퍼.
 
-### Counter (멀티 유저)
+### Counter (전역 — 모두가 하나의 카운터를 함께 올림)
 
 | Method | Path | 설명 |
 |---|---|---|
-| GET | `/counters/{userKey}` | 카운터 조회 |
-| POST | `/counters/{userKey}/increment` | +1. 임계값(기본 50) 돌파 시 Discord 알림 |
-| POST | `/counters/{userKey}/decrement` | -1 (0 미만 불가) |
-| POST | `/counters/{userKey}/reset` | 리셋 (비밀번호 필요) |
-| GET | `/counters/ranking` | allBest 상위 10 랭킹 |
+| GET | `/counter` | 전역 카운터 조회 |
+| POST | `/counter/increment` | +1. 임계값(기본 50)의 배수마다 Discord 알림 |
+| POST | `/counter/decrement` | -1 (0 미만 불가) |
+| POST | `/counter/reset` | 리셋 (관리자 전용, 비밀번호 필요) |
 
 리셋 요청 바디:
 ```json
@@ -66,7 +65,10 @@
 
 | Method | Path | 설명 |
 |---|---|---|
-| POST | `/issues` | 이슈 등록 |
+| POST | `/issues` | 이슈 등록 (assignee 비우면 미할당) |
+| POST | `/issues/assign-one` | **미할당 이슈 중 가장 오래된 1개를 `codebidoof`에게 배정** |
+| POST | `/issues/assign-unassigned` | 미할당 이슈 전부를 `codebidoof`에게 배정 |
+| POST | `/issues/{id}/assign` | 특정 이슈를 `codebidoof`에게 배정 |
 | GET | `/issues/{id}` | 단건 조회 |
 | GET | `/issues` | 목록 조회 |
 
@@ -74,7 +76,8 @@
 ```json
 { "title": "제목", "content": "내용(input)", "assignee": null }
 ```
-- `assignee`를 비우면 **`codebidoof`** 로 고정 할당된다.
+- `assignee`를 비우면 **미할당** 상태로 등록된다.
+- 미할당 이슈는 `assign-unassigned`로 **`codebidoof`에게 배정**한다.
 - `link`는 하드코딩(`https://github.com/LinkYou-2025/LinkU_Android/issues`)으로 자동 연결된다.
 
 ## Discord 웹훅 알림

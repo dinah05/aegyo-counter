@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -107,6 +109,14 @@ fun MainContent(
             weekBest = state.weekBest,
             allBest = state.allBest
         )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Button(
+            onClick = { onIntent(CounterIntent.AssignIssue) }
+        ) {
+            Text("미할당 이슈 1개 배정")
+        }
 
         Spacer(modifier = Modifier.height(100.dp))
 

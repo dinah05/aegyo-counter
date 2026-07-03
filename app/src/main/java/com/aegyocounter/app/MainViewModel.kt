@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.aegyocounter.app.data.CounterDataStore
 import com.aegyocounter.app.data.remote.CounterRemoteRepository
+import com.aegyocounter.app.data.remote.IssueRemoteRepository
 import com.aegyocounter.app.data.remote.dto.CounterResponseDto
 import com.aegyocounter.app.model.Achievement
 import kotlinx.coroutines.channels.Channel
@@ -22,6 +23,7 @@ class MainViewModel(
 
     private val dataStore = CounterDataStore(application)
     private val remote = CounterRemoteRepository()
+    private val issueRemote = IssueRemoteRepository()
 
     private val talks = listOf(
         "호에엥..." to "또 시작이네...",
@@ -150,6 +152,19 @@ class MainViewModel(
             CounterIntent.Up -> increase()
             CounterIntent.Down -> decrease()
             CounterIntent.Reset -> reset()
+            CounterIntent.AssignIssue -> assignOneIssue()
+        }
+    }
+
+    private fun assignOneIssue() {
+        viewModelScope.launch {
+            val issue = issueRemote.assignOne()
+            val message = if (issue != null) {
+                "이슈 #${issue.id} 를 ${issue.assignee}에게 배정했어요"
+            } else {
+                "배정할 미할당 이슈가 없어요"
+            }
+            _effect.send(SideEffect.ShowToast(message))
         }
     }
 

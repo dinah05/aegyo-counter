@@ -14,7 +14,7 @@ import java.time.LocalDateTime
 class Issue protected constructor(
     title: String,
     content: String,
-    assignee: String,
+    assignee: String?,
     link: String,
 ) {
     @Id
@@ -27,9 +27,10 @@ class Issue protected constructor(
     @Column(nullable = false, length = 2000)
     val content: String = content
 
-    /** 담당자. 요청에 없으면 codebidoof 로 고정 할당된다. */
-    @Column(nullable = false)
-    val assignee: String = assignee
+    /** 담당자. null 이면 미할당 상태. */
+    @Column(nullable = true)
+    var assignee: String? = assignee
+        protected set
 
     /** 하드코딩된 연결 링크. */
     @Column(nullable = false)
@@ -39,8 +40,13 @@ class Issue protected constructor(
     @Column(updatable = false)
     val createdAt: LocalDateTime = LocalDateTime.now()
 
+    /** 담당자에게 배정한다. */
+    fun assignTo(user: String) {
+        assignee = user
+    }
+
     companion object {
-        fun create(title: String, content: String, assignee: String, link: String): Issue =
+        fun create(title: String, content: String, assignee: String?, link: String): Issue =
             Issue(title = title, content = content, assignee = assignee, link = link)
     }
 }

@@ -22,12 +22,12 @@ object RetrofitProvider {
         .readTimeout(5, TimeUnit.SECONDS)
         .build()
 
-    val counterApi: CounterApiService by lazy {
-        Retrofit.Builder()
-            .baseUrl(ApiConfig.BASE_URL)
-            .client(okHttpClient)
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
-            .build()
-            .create(CounterApiService::class.java)
-    }
+    private val retrofit: Retrofit = Retrofit.Builder()
+        .baseUrl(ApiConfig.BASE_URL)
+        .client(okHttpClient)
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
+        .build()
+
+    val counterApi: CounterApiService by lazy { retrofit.create(CounterApiService::class.java) }
+    val issueApi: IssueApiService by lazy { retrofit.create(IssueApiService::class.java) }
 }

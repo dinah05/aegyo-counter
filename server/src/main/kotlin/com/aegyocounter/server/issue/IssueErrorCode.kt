@@ -9,4 +9,5 @@ enum class IssueErrorCode(
     override val message: String,
 ) : BaseErrorCode {
     NOT_FOUND(HttpStatus.NOT_FOUND, "ISSUE4001", "이슈를 찾을 수 없습니다."),
+    NO_UNASSIGNED(HttpStatus.NOT_FOUND, "ISSUE4002", "미할당 이슈가 없습니다."),
 }
