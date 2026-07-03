@@ -29,13 +29,12 @@ class CounterService(
     @Transactional
     fun increment(): CounterResponseDTO {
         val counter = getOrCreate()
-        val previous = counter.count
         counter.increase()
 
-        // count가 임계값(기본 50)을 "넘어서는 순간" 1회 Discord 웹훅 알림 전송
+        // count가 임계값(기본 50)의 배수가 될 때마다 Discord 웹훅 알림 전송 (50, 100, 150...)
         val threshold = notificationProperties.threshold
-        val crossedThreshold = previous < threshold && counter.count >= threshold
-        val notificationSent = if (crossedThreshold) {
+        val reachedMultiple = counter.count > 0 && counter.count % threshold == 0
+        val notificationSent = if (reachedMultiple) {
             notificationSender.send(buildThresholdMessage(counter.count))
         } else {
             false

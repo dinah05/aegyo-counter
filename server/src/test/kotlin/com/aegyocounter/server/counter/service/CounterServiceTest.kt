@@ -31,8 +31,8 @@ class CounterServiceTest {
         )
 
     @Test
-    fun `임계값을 넘어서는 순간 Discord 알림을 발송한다`() {
-        // given: threshold=1, 새 카운터(count 0)에서 1회 증가하면 1 >= 1 로 임계값 돌파
+    fun `임계값의 배수에 도달하면 Discord 알림을 발송한다`() {
+        // given: threshold=1, 새 카운터(count 0)에서 1회 증가하면 1 % 1 == 0 으로 배수 도달
         whenever(counterRepository.findAll()).doReturn(emptyList())
         whenever(counterRepository.save(any<Counter>())).doAnswer { it.arguments[0] as Counter }
         whenever(notificationSender.send(any())).doReturn(true)

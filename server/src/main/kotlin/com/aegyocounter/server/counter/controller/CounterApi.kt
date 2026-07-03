@@ -17,7 +17,7 @@ interface CounterApi {
 
     @Operation(
         summary = "카운트 +1",
-        description = "전역 카운트를 1 증가시킨다. 임계값(기본 50) 초과 순간 Discord 웹훅으로 알림을 발송한다.",
+        description = "전역 카운트를 1 증가시킨다. 임계값(기본 50)의 배수마다 Discord 웹훅으로 알림을 발송한다.",
     )
     fun increment(): ApiResponse<CounterResponseDTO>
 
