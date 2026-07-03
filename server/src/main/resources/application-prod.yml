@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE}
+    username: ${PGUSER}
+    password: ${PGPASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: false
+    open-in-view: false
+  h2:
+    console:
+      enabled: false
+
+discord:
+  webhook:
+    enabled: ${DISCORD_WEBHOOK_ENABLED:true}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health

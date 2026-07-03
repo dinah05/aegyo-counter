@@ -5,10 +5,12 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.aegyocounter.app.data.CounterDataStore
+import com.aegyocounter.app.data.remote.CounterRemoteRepository
+import com.aegyocounter.app.data.remote.IssueRemoteRepository
+import com.aegyocounter.app.data.remote.dto.CounterResponseDto
 import com.aegyocounter.app.model.Achievement
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -20,6 +22,8 @@ class MainViewModel(
 ) : AndroidViewModel(application) {
 
     private val dataStore = CounterDataStore(application)
+    private val remote = CounterRemoteRepository()
+    private val issueRemote = IssueRemoteRepository()
 
     private val talks = listOf(
         "호에엥..." to "또 시작이네...",
@@ -94,6 +98,14 @@ class MainViewModel(
     init {
         viewModelScope.launch {
 
+            // 전역 카운터 주기적 새로고침
+            launch {
+                while (true) {
+                    remote.get()?.let { syncFromServer(it) }
+                    delay(POLL_INTERVAL_MS)
+                }
+            }
+
             launch {
                 dataStore.count.collect { count ->
                     _state.update {
@@ -125,20 +137,14 @@ class MainViewModel(
                     }
                 }
             }
-
-            launch {
-                val today = LocalDate.now()
-                    .format(DateTimeFormatter.ISO_DATE)
-
-                dataStore.lastDate.collect { lastDate ->
-                    if (lastDate != today) {
-                        dataStore.saveCount(0)
-                        dataStore.saveTodayBest(0)
-                        dataStore.saveLastDate(today)
-                    }
-                }
-            }
         }
+    }
+
+    private suspend fun syncFromServer(dto: CounterResponseDto) {
+        dataStore.saveCount(dto.count)
+        dataStore.saveTodayBest(dto.todayBest)
+        dataStore.saveWeekBest(dto.weekBest)
+        dataStore.saveAllBest(dto.allBest)
     }
 
     fun handleIntent(intent: CounterIntent) {
@@ -146,6 +152,19 @@ class MainViewModel(
             CounterIntent.Up -> increase()
             CounterIntent.Down -> decrease()
             CounterIntent.Reset -> reset()
+            CounterIntent.AssignIssue -> assignOneIssue()
+        }
+    }
+
+    private fun assignOneIssue() {
+        viewModelScope.launch {
+            val issue = issueRemote.assignOne()
+            val message = if (issue != null) {
+                "이슈 #${issue.id} 를 ${issue.assignee}에게 배정했어요"
+            } else {
+                "배정할 미할당 이슈가 없어요"
+            }
+            _effect.send(SideEffect.ShowToast(message))
         }
     }
 
@@ -175,6 +194,8 @@ class MainViewModel(
             dataStore.saveTodayBest(todayBest)
             dataStore.saveWeekBest(weekBest)
             dataStore.saveAllBest(allBest)
+
+            launch { remote.increment()?.let { syncFromServer(it) } }
 
             achievements.find { it.count == newCount }?.let { achievement ->
 
@@ -215,21 +236,15 @@ class MainViewModel(
             }
 
             dataStore.saveCount(newCount)
+
+            launch { remote.decrement()?.let { syncFromServer(it) } }
         }
     }
 
+    // reset은 관리자 전용. 앱 버튼은 서버 최신값으로 새로고침만
     private fun reset() {
         viewModelScope.launch {
-
-            _state.update {
-                it.copy(
-                    number = 0,
-                    todayBest = 0
-                )
-            }
-
-            dataStore.saveCount(0)
-            dataStore.saveTodayBest(0)
+            remote.get()?.let { syncFromServer(it) }
         }
     }
 
@@ -237,5 +252,9 @@ class MainViewModel(
         _state.update {
             it.copy(showAchievementDialog = false)
         }
+    }
+
+    private companion object {
+        const val POLL_INTERVAL_MS = 3000L
     }
 }

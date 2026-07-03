@@ -5,4 +5,6 @@ sealed interface CounterIntent {
     data object Down: CounterIntent
 
     data object Reset : CounterIntent
+
+    data object AssignIssue : CounterIntent
 }
