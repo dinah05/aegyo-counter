@@ -5,7 +5,7 @@
 ## 스택
 
 - Kotlin / Java 21 / Spring Boot 4 (webmvc, validation, actuator)
-- **DB 없음** — 저장소는 인메모리(`ConcurrentHashMap`). 서버 재시작 시 데이터 초기화됨
+- Spring Data JPA + Hibernate — 로컬/테스트 H2(PostgreSQL 모드), 운영 PostgreSQL(Railway). 데이터 영속
 - 공통 응답 `ApiResponse<T>`, `{도메인}{HTTP코드}{순번}` 에러코드, 전역 예외 처리
 - SpringDoc(Swagger UI)
 
@@ -27,7 +27,7 @@
 ## 실행
 
 ```bash
-# 로컬 실행 (기본 프로파일 local)
+# 로컬 실행 (H2 in-memory, 기본 프로파일 local)
 ./gradlew :server:bootRun
 
 # 테스트
@@ -38,6 +38,7 @@
 ```
 
 - Swagger UI: http://localhost:8080/swagger-ui.html
+- H2 콘솔: http://localhost:8080/h2-console
 - 헬스체크: http://localhost:8080/actuator/health
 
 환경변수는 `.env.example` 참고.
@@ -85,5 +86,6 @@
 
 ## 배포
 
-`server/Dockerfile` 멀티스테이지 빌드(`-PbackendOnly`). Railway 등에 `SPRING_PROFILES_ACTIVE=prod` +
-`COUNTER_RESET_PASSWORD`, `DISCORD_WEBHOOK_URL` 환경변수로 배포. (DB 없음 — 재시작 시 데이터 초기화)
+`server/Dockerfile` 멀티스테이지 빌드(`-PbackendOnly`). Railway에 PostgreSQL 서비스를 붙이고
+`SPRING_PROFILES_ACTIVE=prod` + PG 접속정보(`PGHOST/PGPORT/PGDATABASE/PGUSER/PGPASSWORD`) +
+`COUNTER_RESET_PASSWORD`, `DISCORD_WEBHOOK_URL` 환경변수로 배포. (데이터는 PostgreSQL에 영속)

@@ -3,7 +3,6 @@ package com.aegyocounter.server.counter.dto
 import com.aegyocounter.server.counter.entity.Counter
 
 data class CounterResponseDTO(
-    val userKey: String,
     val count: Int,
     val todayBest: Int,
     val weekBest: Int,
@@ -14,7 +13,6 @@ data class CounterResponseDTO(
     companion object {
         fun of(counter: Counter, notificationSent: Boolean = false): CounterResponseDTO =
             CounterResponseDTO(
-                userKey = counter.userKey,
                 count = counter.count,
                 todayBest = counter.todayBest,
                 weekBest = counter.weekBest,

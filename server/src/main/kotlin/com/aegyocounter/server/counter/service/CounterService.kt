@@ -2,13 +2,14 @@ package com.aegyocounter.server.counter.service
 
 import com.aegyocounter.server.common.exception.CustomException
 import com.aegyocounter.server.counter.CounterErrorCode
-import com.aegyocounter.server.counter.dto.CounterRankingDTO
 import com.aegyocounter.server.counter.dto.CounterResponseDTO
+import com.aegyocounter.server.counter.entity.Counter
 import com.aegyocounter.server.counter.repository.CounterRepository
 import com.aegyocounter.server.notification.NotificationProperties
 import com.aegyocounter.server.notification.NotificationSender
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class CounterService(
@@ -18,15 +19,16 @@ class CounterService(
     @Value("\${counter.reset-password:}") private val resetPassword: String,
 ) {
 
-    fun get(userKey: String): CounterResponseDTO {
-        val counter = counterRepository.findByUserKey(userKey)
-            ?: throw CustomException(CounterErrorCode.NOT_FOUND)
-        return CounterResponseDTO.of(counter)
-    }
+    /** 전역 카운터(row 1개)를 가져오거나 없으면 생성한다. */
+    private fun getOrCreate(): Counter =
+        counterRepository.findAll().firstOrNull() ?: counterRepository.save(Counter.create())
 
-    fun increment(userKey: String): CounterResponseDTO {
-        val counter = counterRepository.getOrCreate(userKey)
+    @Transactional
+    fun get(): CounterResponseDTO = CounterResponseDTO.of(getOrCreate())
 
+    @Transactional
+    fun increment(): CounterResponseDTO {
+        val counter = getOrCreate()
         val previous = counter.count
         counter.increase()
 
@@ -34,7 +36,7 @@ class CounterService(
         val threshold = notificationProperties.threshold
         val crossedThreshold = previous < threshold && counter.count >= threshold
         val notificationSent = if (crossedThreshold) {
-            notificationSender.send(buildThresholdMessage(userKey, counter.count))
+            notificationSender.send(buildThresholdMessage(counter.count))
         } else {
             false
         }
@@ -42,32 +44,29 @@ class CounterService(
         return CounterResponseDTO.of(counter, notificationSent)
     }
 
-    fun decrement(userKey: String): CounterResponseDTO {
-        val counter = counterRepository.findByUserKey(userKey)
-            ?: throw CustomException(CounterErrorCode.NOT_FOUND)
+    @Transactional
+    fun decrement(): CounterResponseDTO {
+        val counter = getOrCreate()
         if (!counter.decrease()) {
             throw CustomException(CounterErrorCode.ALREADY_ZERO)
         }
         return CounterResponseDTO.of(counter)
     }
 
-    fun reset(userKey: String, password: String): CounterResponseDTO {
+    /** 관리자 전용. env COUNTER_RESET_PASSWORD 와 일치해야 초기화된다. */
+    @Transactional
+    fun reset(password: String): CounterResponseDTO {
         if (resetPassword.isBlank() || password != resetPassword) {
             throw CustomException(CounterErrorCode.INVALID_RESET_PASSWORD)
         }
-        val counter = counterRepository.findByUserKey(userKey)
-            ?: throw CustomException(CounterErrorCode.NOT_FOUND)
+        val counter = getOrCreate()
         counter.reset()
         return CounterResponseDTO.of(counter)
     }
 
-    fun ranking(): List<CounterRankingDTO> =
-        counterRepository.findTop10ByAllBestDesc()
-            .mapIndexed { index, counter -> CounterRankingDTO.of(index + 1, counter) }
-
-    private fun buildThresholdMessage(userKey: String, count: Int): String =
+    private fun buildThresholdMessage(count: Int): String =
         ":rotating_light: **애교 감시망**\n" +
-            "`$userKey` 님의 애교가 또 감지되었습니다.\n" +
-            "현재 ${count}회째 기록 중.\n" +
+            "누군가의 애교가 또 감지되었습니다.\n" +
+            "전역 카운트 ${count}회 돌파.\n" +
             "도망가셔도 소용없습니다. 이미 전부 저장됐거든요. :file_folder:"
 }
