@@ -65,9 +65,9 @@
 ## 👩🏻‍💻 Developers
 
 | Profile | Name | Role | GitHub |
-| :---: | --- |  | --- |
+| :---: | --- | --- | --- |
 | <img src="https://github.com/dinah05.png" width="80" /> | 윤다인 | PM·PD·FE | [@dinah05](https://github.com/dinah05) |
 | <img src="https://github.com/JiwonLee42.png" width="80" /> | 이지원 | Backend Developer | [@JiwonLee42](https://github.com/JiwonLee42) |
-| <img src="https://github.com/codebidoof.png" width="80" /> | 문현우 | 링큐 최고 귀여미 | [@codebidoof](https://github.com/codebidoof) |
+| <img src="https://github.com/codebidoof.png" width="80" /> | 문현우 | 링큐최고귀요미 | [@codebidoof](https://github.com/codebidoof) |
 
 <br />
