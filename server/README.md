@@ -61,24 +61,26 @@
 { "password": "COUNTER_RESET_PASSWORD 값" }
 ```
 
-### Issue
+### Issue (GitHub Issues)
 
 | Method | Path | 설명 |
 |---|---|---|
-| POST | `/issues` | 이슈 등록 (assignee 비우면 미할당) |
-| POST | `/issues/assign-one` | **미할당 이슈 중 가장 오래된 1개를 `codebidoof`에게 배정** |
-| POST | `/issues/assign-unassigned` | 미할당 이슈 전부를 `codebidoof`에게 배정 |
-| POST | `/issues/{id}/assign` | 특정 이슈를 `codebidoof`에게 배정 |
-| GET | `/issues/{id}` | 단건 조회 |
-| GET | `/issues` | 목록 조회 |
+| POST | `/issues` | GitHub 이슈 등록 (assignee 비우면 미할당) |
+| POST | `/issues/assign-one` | **GitHub 미할당 이슈 중 가장 오래된 1개를 `codebidoof`에게 배정** |
+| POST | `/issues/assign-unassigned` | GitHub 미할당 이슈 전부를 `codebidoof`에게 배정 |
+| POST | `/issues/{id}/assign` | GitHub issue number 기준으로 특정 이슈를 `codebidoof`에게 배정 |
+| GET | `/issues/{id}` | GitHub issue number 기준 단건 조회 |
+| GET | `/issues` | GitHub open issue 목록 조회 |
 
 등록 요청 바디:
 ```json
 { "title": "제목", "content": "내용(input)", "assignee": null }
 ```
 - `assignee`를 비우면 **미할당** 상태로 등록된다.
-- 미할당 이슈는 `assign-unassigned`로 **`codebidoof`에게 배정**한다.
-- `link`는 하드코딩(`https://github.com/LinkYou-2025/LinkU_Android/issues`)으로 자동 연결된다.
+- 미할당 이슈는 `assign-one` 또는 `assign-unassigned`로 **`codebidoof`에게 배정**한다.
+- 이슈 기능은 서버 DB에 저장하지 않고 GitHub Issues API만 사용한다.
+- `id`는 서버 DB PK가 아니라 GitHub issue number다.
+- 운영에서는 `GITHUB_TOKEN`이 GitHub Issues 읽기/쓰기 권한을 가져야 한다.
 
 ## Discord 웹훅 알림
 

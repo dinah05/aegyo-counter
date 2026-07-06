@@ -1,7 +1,7 @@
 package com.aegyocounter.server.issue.dto
 
-import com.aegyocounter.server.issue.entity.Issue
-import java.time.LocalDateTime
+import com.aegyocounter.server.github.GitHubIssueClient
+import java.time.OffsetDateTime
 
 data class IssueResponseDTO(
     val id: Long,
@@ -9,16 +9,16 @@ data class IssueResponseDTO(
     val content: String,
     val assignee: String?,
     val link: String,
-    val createdAt: LocalDateTime,
+    val createdAt: OffsetDateTime,
 ) {
     companion object {
-        fun of(issue: Issue): IssueResponseDTO =
+        fun of(issue: GitHubIssueClient.GitHubIssue): IssueResponseDTO =
             IssueResponseDTO(
-                id = issue.id,
+                id = issue.number,
                 title = issue.title,
-                content = issue.content,
-                assignee = issue.assignee,
-                link = issue.link,
+                content = issue.body.orEmpty(),
+                assignee = issue.assignees.firstOrNull()?.login,
+                link = issue.htmlUrl,
                 createdAt = issue.createdAt,
             )
     }

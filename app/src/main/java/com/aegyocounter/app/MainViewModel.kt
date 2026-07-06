@@ -98,10 +98,21 @@ class MainViewModel(
     init {
         viewModelScope.launch {
 
-            // 전역 카운터 주기적 새로고침
+            // 전역 카운터 주기적 새로고침 + 연결 상태 표시(상태 바뀔 때만 토스트)
             launch {
+                var lastConnected: Boolean? = null
                 while (true) {
-                    remote.get()?.let { syncFromServer(it) }
+                    val dto = remote.get()
+                    val connected = dto != null
+                    dto?.let { syncFromServer(it) }
+                    if (lastConnected != connected) {
+                        lastConnected = connected
+                        _effect.send(
+                            SideEffect.ShowToast(
+                                if (connected) "서버 연결됨" else "서버 연결 실패",
+                            ),
+                        )
+                    }
                     delay(POLL_INTERVAL_MS)
                 }
             }
