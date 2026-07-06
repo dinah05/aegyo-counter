@@ -28,7 +28,7 @@ server:
 counter:
   reset-password: ${COUNTER_RESET_PASSWORD:}
 
-# GitHub 이슈 연동 (token 없으면 실제 생성 스킵)
+# GitHub 이슈 연동 (이슈 기능은 GitHub Issues API만 사용)
 github:
   token: ${GITHUB_TOKEN:}
   owner: LinkYou-2025

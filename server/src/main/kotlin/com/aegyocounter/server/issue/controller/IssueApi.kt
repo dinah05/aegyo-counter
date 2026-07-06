@@ -12,19 +12,19 @@ interface IssueApi {
 
     @Operation(
         summary = "이슈 등록",
-        description = "input(title/content)만 넣으면 등록된다. assignee 를 비우면 미할당 상태로 등록되고, 링크는 하드코딩으로 연결된다.",
+        description = "GitHub 이슈를 생성한다. assignee 를 비우면 GitHub 미할당 상태로 등록된다.",
     )
     fun create(request: IssueCreateRequestDTO): ResponseEntity<ApiResponse<IssueResponseDTO>>
 
     @Operation(
         summary = "미할당 이슈 1개 배정",
-        description = "미할당 이슈 중 가장 오래된 1개를 codebidoof 에게 배정한다. 없으면 404.",
+        description = "GitHub 미할당 이슈 중 가장 오래된 1개를 codebidoof 에게 배정한다. 없으면 result 를 null 로 반환한다.",
     )
-    fun assignOneUnassigned(): ApiResponse<IssueResponseDTO>
+    fun assignOneUnassigned(): ApiResponse<IssueResponseDTO?>
 
     @Operation(
         summary = "미할당 이슈 일괄 배정",
-        description = "담당자가 없는(미할당) 이슈 전부를 codebidoof 에게 배정한다.",
+        description = "GitHub 담당자가 없는(미할당) 이슈 전부를 codebidoof 에게 배정한다.",
     )
     fun assignUnassigned(): ApiResponse<List<IssueResponseDTO>>
 

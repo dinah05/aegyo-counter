@@ -29,7 +29,7 @@ class IssueController(
             .body(ApiResponse.onSuccess(issueService.create(request), CommonSuccessCode.CREATED))
 
     @PostMapping("/assign-one")
-    override fun assignOneUnassigned(): ApiResponse<IssueResponseDTO> =
+    override fun assignOneUnassigned(): ApiResponse<IssueResponseDTO?> =
         ApiResponse.onSuccess(issueService.assignOneUnassigned())
 
     @PostMapping("/assign-unassigned")
